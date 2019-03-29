@@ -33,8 +33,8 @@ export default class Particle {
 
   	// console.log(coordx,coordy);
 
-  	this.ax += vector[coordy][coordx][0]/10;
-  	this.ay += vector[coordy][coordx][1]/10;
+  	this.ax += vector[coordy][coordx][0]/3;
+  	this.ay += vector[coordy][coordx][1]/3;
   }
 
   move(obj) {
@@ -47,14 +47,20 @@ export default class Particle {
     this.ax = 0;
     this.ay = 0;
 
-    this.vx *= 0.6;
-    this.vy *= 0.6;
+    if(this.vx > 0.5) {
+      this.vx /= 2;
+    }
+    if(this.vy > 0.5) {
+      this.vy /=2;
+    }
+    this.vx *= 0.85;
+    this.vy *= 0.85;
 
-    if(this.y >= obj.height) {this.y = 0; this.x = Math.random()*obj.width; this.vy =0;} else
-    if(this.y <= 0) {this.y = obj.height;this.x = Math.random()*obj.width;this.vy =0;} else
+    if(this.y >= obj.height) {this.y = 0;this.x = Math.random() * obj.width;this.vy = 0;} else
+    if(this.y <= 0) {this.y = obj.height;this.vy = 0;this.x = Math.random() * obj.width;} else
 
-    if(this.x >= obj.width) {this.x = 0;this.y = Math.random()*obj.height;this.vx =0;} else
-   	if(this.x <= 0) {this.x = obj.width;this.y = Math.random()*obj.height;this.vx =0;}  
+    if(this.x >= obj.width) {this.x = 0;this.vx =0;this.y = Math.random() * obj.height;} else
+   	if(this.x <= 0) {this.x = obj.width;this.vx = 0;this.y = Math.random() * obj.height;}  
 
    	// // console.log(obj.height);
    	// if(this.y >= obj.height) {this.y = 0;};
