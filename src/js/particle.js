@@ -37,6 +37,8 @@ export default class Particle {
 
   }
   force(vector, obj) {
+    this.prevX = this.x;
+    this.prevY = this.y;
  		let coordx = Math.floor(this.x/obj.elwidth);
   	let coordy = Math.floor(this.y/obj.elheight);
 
@@ -54,8 +56,6 @@ export default class Particle {
   }
 
   move(obj) {
-    this.prevX = this.x;
-    this.prevY = this.y;
   	this.vx +=this.ax;
   	this.vy += this.ay;
 

@@ -65,7 +65,7 @@ function render() {
   for(let row = 0; row < rows; row++) {
     for(let col = 0; col < cols; col++) {  
       //WIND
-      alpha = Perlin(col/40,row/40,time/1000)*8*Math.PI;
+      alpha = Perlin(col,row,time/1000)*8*Math.PI;
       // vec(col*width,row*height,alpha,30);
       vectors[row][col] = [Math.cos(alpha)*40,Math.sin(alpha)*40];
       // setVectors(row,col,alpha);
