@@ -59,15 +59,15 @@ function drawParticles(parts,ctx,vec) {
 // }
 
 function render() {
-  time+=0.0001;
+  time++;
   window.requestAnimationFrame(render);
   // ctx.clearRect(0,0,canvas.width, canvas.height);
   for(let row = 0; row < rows; row++) {
     for(let col = 0; col < cols; col++) {  
       //WIND
-      alpha = Perlin(col/70,row/70,time)*4*Math.PI;
+      alpha = Perlin(col/40,row/40,time/1000)*8*Math.PI;
       // vec(col*width,row*height,alpha,30);
-      vectors[row][col] = [Math.cos(alpha)*20,Math.sin(alpha)*20];
+      vectors[row][col] = [Math.cos(alpha)*40,Math.sin(alpha)*40];
       // setVectors(row,col,alpha);
       // drawParticles(particles,ctx,1,1);
       // (particles,ctx,size*Math.cos(alpha)/100,size*Math.sin(alpha)/100);  
