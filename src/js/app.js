@@ -17,7 +17,7 @@ let time = 0;
 let alpha = 0;
 let particles = [];
 let vectors = createArray(rows,cols);
-let numberOfParts = 1000;
+let numberOfParts = 300;
 let force;
 
 function vec(x,y,angle,size) {
@@ -52,12 +52,6 @@ function drawParticles(parts,ctx,vec) {
   });
 }
 
-// function drawLines(lines,ctx) {
-//   lines.forEach(line => {
-//     line.draw(ctx);
-//   });
-// }
-
 function render() {
   time++;
   window.requestAnimationFrame(render);
@@ -65,19 +59,11 @@ function render() {
   for(let row = 0; row < rows; row++) {
     for(let col = 0; col < cols; col++) {  
       //WIND
-      alpha = Perlin(col,row,time/1000)*8*Math.PI;
+      alpha = Perlin(col/70,row/70,time/150)*8*Math.PI;
       // vec(col*width,row*height,alpha,30);
-      vectors[row][col] = [Math.cos(alpha)*40,Math.sin(alpha)*40];
-      // setVectors(row,col,alpha);
-      // drawParticles(particles,ctx,1,1);
-      // (particles,ctx,size*Math.cos(alpha)/100,size*Math.sin(alpha)/100);  
-      // particles[size*row + col].x = col*size+10; 
-      // particles[size*row + col].y = row+size + 10; 
-      // particles[canvas.height/size * row + canvas.width/size].x = Math.random()*canvas.width;
-      // particles[canvas.height/size * row + canvas.width/size].y = Math.random()*canvas.height;
+      vectors[row][col] = [Math.cos(alpha)*30,Math.sin(alpha)*30];
     }
   } 
-  //  drawLines(vectors,ctx);
   drawParticles(particles,ctx,vectors);
 }
 

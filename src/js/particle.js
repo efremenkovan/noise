@@ -1,10 +1,10 @@
 import createArray from './lib/multidarrays.js';
 import Perlin from './lib/perlin.js';
 
-function vec(prevx,prevy,x,y,angle,size,ctx) {
+function vect(prevx,prevy,x,y,ctx) {
   ctx.beginPath();
-  ctx.moveTo(x,y);
-  ctx.lineTo(x+size*Math.cos(angle),y + size*Math.sin(angle));
+  ctx.moveTo(prevx,prevy);
+  ctx.lineTo(prevx+(x-prevx)/1,prevy+(y-prevy)/1);
   ctx.closePath();
   ctx.strokeStyle = 'rgba(0,0,0,0.01)';
   ctx.stroke();
@@ -23,22 +23,23 @@ export default class Particle {
 
     this.vx = v*Math.cos(angle) || 0;
     this.vy = v*Math.sin(angle) || 0;
+
+    this.magnet = 3;
+    this.irr = 0.2;
   }
   draw(ctx) {
 
   	ctx.beginPath();
-    // ctx.arc(this.x, this.y,2,0,Math.PI * 2);
-    // ctx.fillStyle = 'rgba(0,0,0,0.01)' ;   
-
-    vec(this.prevX,this.prevY,this.x,this.y,this.angle,4,ctx);
-
-    // ctx.fill();
+    vect(this.prevX,this.prevY,this.x,this.y,ctx);
     ctx.closePath();
 
   }
-  force(vector, obj) {
+  prevUpdate() {
     this.prevX = this.x;
     this.prevY = this.y;
+  }
+  force(vector, obj) {
+    this.prevUpdate();
  		let coordx = Math.floor(this.x/obj.elwidth);
   	let coordy = Math.floor(this.y/obj.elheight);
 
@@ -48,11 +49,8 @@ export default class Particle {
   	if(coordx<=0) {coordx=0;};
   	if(coordy<=0) {coordy=0;};
 
-  	// console.log(coordx,coordy);
-
-  	this.ax += vector[coordy][coordx][0]/30;
-  	this.ay += vector[coordy][coordx][1]/30;
-    this.angle = Perlin(vector[coordy][coordx][0],vector[coordy][coordx][1],10)*Math.PI*2;
+  	this.ax += vector[coordy][coordx][0]/this.magnet;
+  	this.ay += vector[coordy][coordx][1]/this.magnet;
   }
 
   move(obj) {
@@ -65,29 +63,29 @@ export default class Particle {
     this.ax = 0;
     this.ay = 0;
 
-    this.vx *= 0.4;
-    this.vy *= 0.4;
+    this.vx *= this.irr;
+    this.vy *= this.irr;
 
     if(this.y >= obj.height) {
       this.y = 0;
-      this.x = Perlin(this.x/600,this.y/600, 0) * obj.width;
-      // this.vy = 0;
+      this.x = Math.random() * obj.width;
+      this.prevUpdate();
     } else
     if(this.y <= 0) {
       this.y = obj.height;
-      // this.vy = 0;
-      this.x = Perlin(this.x/600,this.y/600,0) * obj.width;
+      this.x = Math.random() * obj.width;
+      this.prevUpdate();
     } else
 
     if(this.x >= obj.width) {
       this.x = 0;
-      // this.vx =0;
-      this.y = Perlin(this.x/600,this.y/600,0) * obj.height;
+      this.y = Math.random() * obj.height;
+      this.prevUpdate();
     } else
    	if(this.x <= 0) { 
       this.x = obj.width; 
-      // this.vx = 0;
-      this.y = Perlin(this.x/600,this.y/600,0) * obj.height;
+      this.y = Math.random() * obj.height;
+      this.prevUpdate();
     }  
 
    	// // console.log(obj.height);
